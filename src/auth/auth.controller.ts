@@ -1,14 +1,24 @@
 import { Controller, Post, Body } from '@nestjs/common';
+import { AuthService } from './auth.service';
 
 @Controller('auth')
 export class AuthController {
-    // constructor() { }
+    constructor(
+        private readonly auth: AuthService,
+    ) {}
     @Post('login')
     login(@Body() body) {
+        return this.auth.login(body);
         // TODO
     }
 
-    refreshToken(){
+    @Post('register')
+    register(@Body() body) {
+        // TODO
+    }
+
+    @Post('refreshtoken')
+    refreshToken(@Body() body) {
         return null;
     }
 }
