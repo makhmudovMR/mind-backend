@@ -1,7 +1,7 @@
-import {Entity, PrimaryGeneratedColumn, Column} from "typeorm";
+import {Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn} from "typeorm";
 
 @Entity()
-export class User {
+export class Token {
 
     @PrimaryGeneratedColumn()
     id: number;
@@ -12,8 +12,8 @@ export class User {
     @Column()
     refreshToken: string;
 
-    @Column()
-    user: string;
-
+    @OneToOne(type => User)
+    @JoinColumn()
+    user: User;
 
 }

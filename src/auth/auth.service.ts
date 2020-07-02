@@ -2,6 +2,7 @@ import { Injectable, BadRequestException } from '@nestjs/common';
 import { InjectEntityManager } from '@nestjs/typeorm';
 import { EntityManager } from 'typeorm';
 import { User } from '../entity/User';
+import { Token }from '../entity/Token';
 
 import jwt = require('jsonwebtoken');
 import uuid = require('uuid/v4');
@@ -20,6 +21,11 @@ export class AuthService {
             }
             const refreshToken = uuid();
             const accessToken = jwt.sign({ id: user.id }, 'mind');
+            const token = new Token();
+            token.accessToken = accessToken;
+            token.refreshToken = refreshToken;
+            token.user = user;
+            this.manager.save(token)
             return {
                 refreshToken,
                 accessToken,
@@ -29,6 +35,7 @@ export class AuthService {
     }
 
     async refreshToken(body) {
+        const token = this.manager.getRepository(Token).findOne({where: {accessToken: body.accessToken}})
         return;
     }
 }
