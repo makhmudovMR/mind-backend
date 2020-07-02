@@ -8,6 +8,7 @@ export class AppService {
     @InjectEntityManager() private readonly manager: EntityManager,
   ) { }
   async getHello() {
+    return "dfsdfs";
     return await this.manager.getRepository(User).find();
   }
 }

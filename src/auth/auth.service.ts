@@ -1,10 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, BadRequestException } from '@nestjs/common';
 import { InjectEntityManager } from '@nestjs/typeorm';
 import { EntityManager } from 'typeorm';
-import {User} from '../entity/User';
+import { User } from '../entity/User';
 
-const jwt = require('jsonwebtoken');
-const uuid = require('uuid/v4');
+import jwt = require('jsonwebtoken');
+import uuid = require('uuid/v4');
 
 @Injectable()
 export class AuthService {
@@ -13,18 +13,22 @@ export class AuthService {
     ) { }
 
     async login(body) {
-        const user = await this.manager.getRepository(User).findOne({where:{username: body.login}})
-        if (user !== null){
-            if (user.password !== body.password){
-                throw new Error('Invalid password')
+        const user = await this.manager.getRepository(User).findOne({ where: { username: body.login } });
+        if (user !== null) {
+            if (user.password !== body.password) {
+                throw new BadRequestException('Invalid password');
             }
-            const refresh_token = uuid()
-            const access_token = jwt.sign({id: user.id}, 'mind')
+            const refreshToken = uuid();
+            const accessToken = jwt.sign({ id: user.id }, 'mind');
             return {
-                refresh_token,
-                access_token
-            }
+                refreshToken,
+                accessToken,
+            };
         }
         // TODO
+    }
+
+    async refreshToken(body) {
+        return;
     }
 }
