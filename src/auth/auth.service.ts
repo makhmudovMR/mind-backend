@@ -36,7 +36,7 @@ export class AuthService {
 
     async refreshToken(body) {
         const token = await this.manager.getRepository(Token).findOne({ where: { refreshToken: body.refreshToken } });
-        if (!token) {
+        if (token) {
             const newAccessToken = jwt.sign({id: token.user.id}, 'mind');
             const newRefreshToken = uuid();
             const newToken = new Token();

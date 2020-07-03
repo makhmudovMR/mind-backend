@@ -33,7 +33,7 @@ export class AuthController {
 
     @Get('alltokens')
     getAllTokens() {
-        this.auth.allTokens();
+        return this.auth.allTokens();
     }
 
 }
