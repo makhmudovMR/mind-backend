@@ -53,7 +53,17 @@ export class AuthService {
         }
     }
 
-    async register() {
+    async register(body) {
+        if (body.password === body.password_confirm){
+            const newUser = new User();
+            newUser.username = body.username;
+            newUser.firstName = body.firstName;
+            newUser.lastName = body.lastName;
+            newUser.password = body.password;
+            this.manager.save(newUser);
+            return {message: 'User is registered'};
+        }
+        return {message: 'Register Error'};
         // TODO
     }
 

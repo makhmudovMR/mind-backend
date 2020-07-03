@@ -18,7 +18,7 @@ export class User {
     @Column()
     lastName: string;
 
-    @Column()
+    @Column({default: 0})
     age: number;
 
 }

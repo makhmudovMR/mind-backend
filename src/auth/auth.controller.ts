@@ -13,7 +13,7 @@ export class AuthController {
 
     @Post('register')
     register(@Body() body) {
-        // TODO
+        return this.auth.register(body);
     }
 
     @Post('logout')
