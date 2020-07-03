@@ -9,8 +9,8 @@ createConnection().then(async connection => {
     user.firstName = "Samuel";
     user.lastName = "Wold";
     user.age = 26;
-    user.username = 'user1'
-    user.password = '123'
+    user.username = 'user1';
+    user.password = '123';
     await connection.manager.save(user);
     console.log("Saved a new user with id: " + user.id);
 

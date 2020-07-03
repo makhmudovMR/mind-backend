@@ -12,7 +12,8 @@ import { LoggerMiddleware} from './middleware/auth.middleware';
   providers: [AppService],
 })
 export class AppModule implements NestModule {
-  configure(consumer: MiddlewareConsumer){
-    consumer.apply(LoggerMiddleware).forRoutes('');
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(LoggerMiddleware).forRoutes('*');
+    // consumer.apply(LoggerMiddleware).exclude('/auth/login').forRoutes('*');
   }
 }
