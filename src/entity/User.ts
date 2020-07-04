@@ -1,4 +1,4 @@
-import {Entity, PrimaryGeneratedColumn, Column} from "typeorm";
+import {Entity, PrimaryGeneratedColumn, Column, OneToMany, OneToOne} from "typeorm";
 
 @Entity()
 export class User {
@@ -20,5 +20,8 @@ export class User {
 
     @Column({default: 0})
     age: number;
+
+    // @OneToMany(type => User, user => user.followers)
+    // followers: User
 
 }

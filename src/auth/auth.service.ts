@@ -15,6 +15,7 @@ export class AuthService {
 
     async login(body) {
         const user = await this.manager.getRepository(User).findOne({ where: { username: body.username } });
+        console.log(user)
         if (user !== null) {
             if (user.password !== body.password) {
                 throw new BadRequestException('Invalid password');
@@ -80,6 +81,6 @@ export class AuthService {
     }
 
     async allTokens() {
-        return await this.manager.getRepository(Token).find();
+        return await this.manager.getRepository(Token).find({relations:['user']});
     }
 }
