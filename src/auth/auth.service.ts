@@ -32,12 +32,15 @@ export class AuthService {
                 accessToken,
             };
         }
-        // TODO
+        else {
+            return {message: 'Wrong username or password.'}
+        }
     }
 
     async refreshToken(body) {
         const token = await this.manager.getRepository(Token).findOne({ where: { refreshToken: body.refreshToken } });
         if (token) {
+            await this.manager.remove(token);
             const newAccessToken = jwt.sign({id: token.user.id}, 'mind');
             const newRefreshToken = uuid();
             const newToken = new Token();
@@ -65,7 +68,6 @@ export class AuthService {
             return {message: 'User is registered'};
         }
         return {message: 'Register Error'};
-        // TODO
     }
 
     async logout(body) {

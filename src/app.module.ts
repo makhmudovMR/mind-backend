@@ -5,9 +5,11 @@ import { EntityManager } from 'typeorm';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
 import { LoggerMiddleware} from './middleware/auth.middleware';
+import { ContentModule } from './content/content.module';
+
 
 @Module({
-  imports: [TypeOrmModule.forRoot(), AuthModule],
+  imports: [TypeOrmModule.forRoot(), AuthModule, ContentModule],
   controllers: [AppController],
   providers: [AppService],
 })
