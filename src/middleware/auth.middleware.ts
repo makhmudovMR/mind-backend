@@ -21,7 +21,7 @@ export function LoggerMiddleware(req, res, next) {
                     title: 'unauthorized',
                 });
             }
-            res.user_info = decoded;
+            req.userInfo = decoded;
             next();
         });
     } else {

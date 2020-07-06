@@ -20,7 +20,7 @@ export class AuthService {
                 throw new BadRequestException('Invalid password');
             }
             const refreshToken = uuid();
-            const accessToken = jwt.sign({ id: user.id }, 'mind');
+            const accessToken = jwt.sign({ userId: user.id }, 'mind');
             const token = new Token();
             token.accessToken = accessToken;
             token.refreshToken = refreshToken;
@@ -40,7 +40,7 @@ export class AuthService {
         const token = await this.manager.getRepository(Token).findOne({ where: { refreshToken: body.refreshToken } });
         if (token) {
             await this.manager.remove(token);
-            const newAccessToken = jwt.sign({id: token.user.id}, 'mind');
+            const newAccessToken = jwt.sign({userId: token.user.id}, 'mind');
             const newRefreshToken = uuid();
             const newToken = new Token();
             newToken.accessToken = newAccessToken;
@@ -83,5 +83,9 @@ export class AuthService {
 
     async allTokens() {
         return await this.manager.getRepository(Token).find({relations:['user']});
+    }
+
+    async addUser(body) {
+        const user = await this.manager.getRepository(User).find({where: {username: 'user1'}});
     }
 }

@@ -8,19 +8,19 @@ export class ContentController {
         private readonly contentService: ContentService,
     ) { }
 
-    @Get('getuserinfo')
-    async getUserInfo(@Req() req, @Body() body) {
-        return this.contentService.getUserInfo(req, body);
+    @Get('getuser')
+    async getUser(@Req() req, @Body() body) {
+        return this.contentService.getUser(req, body);
     }
 
     @Get('getallpost')
-    async getAllPost() {
-        // TODO
+    async getAllPost(@Req() req, @Body() body) {
+        return this.contentService.getAllPost(req, body);
     }
 
     @Get('getfollowingpost')
-    async getFollowingPost() {
-        // TODO
+    async getFollowingPost(@Req() req, @Body() body) {
+        return this.contentService.getFollowingPost(req, body);
     }
 
     @Post('makepost')
