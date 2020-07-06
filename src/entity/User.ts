@@ -1,4 +1,4 @@
-import {Entity, PrimaryGeneratedColumn, Column, OneToMany, OneToOne, ManyToMany, JoinTable} from "typeorm";
+import {Entity, PrimaryGeneratedColumn, Column, OneToMany, OneToOne, ManyToMany, JoinTable, JoinColumn} from "typeorm";
 
 @Entity()
 export class User {
@@ -22,11 +22,11 @@ export class User {
     age: number;
 
     // How that thing is work ask Abakar
-    @ManyToMany(type => User, user => user.followers)
-    @JoinTable()
+    @OneToMany(type => User, user => user.followers)
+    @JoinColumn()
     followers: User[];
 
-    @ManyToMany(type => User, user => user.following)
+    @OneToMany(type => User, user => user.following)
     @JoinTable()
     following: User[];
 
