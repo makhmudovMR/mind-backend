@@ -13,18 +13,19 @@ function getPath(originalUrl: string) {
 
 export function LoggerMiddleware(req, res, next) {
     Logger.log(`Request...`);
-    Logger.log(getPath(req.originalUrl));
-    if (getPath(req.originalUrl) !== '/auth/login' && getPath(req.originalUrl) !== '/auth/alltokens') {
-        jwt.verify(req.headers.token, 'mind', (err, decoded) => {
-            if (err) {
-                return res.status(401).json({
-                    title: 'unauthorized',
-                });
-            }
-            req.userInfo = decoded;
-            next();
-        });
-    } else {
-        next();
-    }
+    // Logger.log(getPath(req.originalUrl));
+    // if (getPath(req.originalUrl) !== '/auth/login' && getPath(req.originalUrl) !== '/auth/alltokens') {
+    //     jwt.verify(req.headers.token, 'mind', (err, decoded) => {
+    //         if (err) {
+    //             return res.status(401).json({
+    //                 title: 'unauthorized',
+    //             });
+    //         }
+    //         req.userInfo = decoded;
+    //         next();
+    //     });
+    // } else {
+    //     next();
+    // }
+    next();
 }

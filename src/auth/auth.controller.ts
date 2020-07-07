@@ -36,4 +36,9 @@ export class AuthController {
         return this.auth.allTokens();
     }
 
+    @Post('adduser')
+    addUser(@Body() body) {
+        return this.auth.addUser(body);
+    }
+
 }

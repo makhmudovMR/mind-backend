@@ -22,12 +22,12 @@ export class User {
     age: number;
 
     // How that thing is work ask Abakar
-    @OneToMany(type => User, user => user.followers)
+    @ManyToMany(type => User, user => user.followers)
     @JoinColumn()
     followers: User[];
 
     @OneToMany(type => User, user => user.following)
-    @JoinTable()
+    @JoinColumn()
     following: User[];
 
 }

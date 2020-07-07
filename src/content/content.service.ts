@@ -2,6 +2,7 @@ import { Injectable, Logger, Post } from '@nestjs/common';
 import { InjectEntityManager } from '@nestjs/typeorm';
 import { EntityManager } from 'typeorm';
 import { User } from '../entity/User';
+import { Mind } from '../entity/Mind';
 
 @Injectable()
 export class ContentService {
@@ -21,6 +22,8 @@ export class ContentService {
     }
 
     async getFollowingPost(req, body) {
-        return [];
+        const user = await this.manager.getRepository(User).findOne({where: {id: req.uesrInfo.userId}});
+        const posts = await this.manager.getRepository(Mind).find({where: {user: user.following}});
+        return posts;
     }
 }

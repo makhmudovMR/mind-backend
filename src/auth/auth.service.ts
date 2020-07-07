@@ -57,7 +57,7 @@ export class AuthService {
     }
 
     async register(body) {
-        if (body.password === body.password_confirm){
+        if (body.password === body.password_confirm) {
             const newUser = new User();
             newUser.username = body.username;
             newUser.firstName = body.firstName;
@@ -86,6 +86,19 @@ export class AuthService {
     }
 
     async addUser(body) {
-        const user = await this.manager.getRepository(User).find({where: {username: 'user1'}});
+        const user = await this.manager.getRepository(User).findOne({where: {username: 'user1'}});
+        const newUser = new User();
+        newUser.firstName = body.firstName;
+        newUser.lastName = body.lastName;
+        newUser.username = body.username;
+        newUser.password = body.password;
+        newUser.age = body.age;
+        newUser.followers = [user];
+        // newUser.followers = [newUser];
+
+        this.manager.save(newUser);
+        user.following = [newUser];
+        this.manager.save(user);
+        return newUser;
     }
 }
