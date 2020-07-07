@@ -21,13 +21,4 @@ export class User {
     @Column({default: 0})
     age: number;
 
-    // How that thing is work ask Abakar
-    @ManyToMany(type => User, user => user.followers)
-    @JoinColumn()
-    followers: User[];
-
-    @OneToMany(type => User, user => user.following)
-    @JoinColumn()
-    following: User[];
-
 }

@@ -2,6 +2,7 @@ import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, ManyToMan
 import { User } from "./User";
 import { MindTags } from "./MindTags";
 
+@Entity()
 export class Mind {
     @PrimaryGeneratedColumn()
     id: string;

@@ -84,21 +84,4 @@ export class AuthService {
     async allTokens() {
         return await this.manager.getRepository(Token).find({relations:['user']});
     }
-
-    async addUser(body) {
-        const user = await this.manager.getRepository(User).findOne({where: {username: 'user1'}});
-        const newUser = new User();
-        newUser.firstName = body.firstName;
-        newUser.lastName = body.lastName;
-        newUser.username = body.username;
-        newUser.password = body.password;
-        newUser.age = body.age;
-        newUser.followers = [user];
-        // newUser.followers = [newUser];
-
-        this.manager.save(newUser);
-        user.following = [newUser];
-        this.manager.save(user);
-        return newUser;
-    }
 }
