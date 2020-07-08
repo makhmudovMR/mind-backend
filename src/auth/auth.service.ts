@@ -6,6 +6,7 @@ import { Token } from '../entity/Token';
 
 import jwt = require('jsonwebtoken');
 import uuid = require('uuid/v4');
+import { FollowRelation } from '../entity/FollowRelation';
 
 @Injectable()
 export class AuthService {
@@ -84,4 +85,26 @@ export class AuthService {
     async allTokens() {
         return await this.manager.getRepository(Token).find({relations:['user']});
     }
+
+    async addUser(body){
+        const newUser = new User();
+        newUser.username = body.username;
+        newUser.password = body.password;
+        newUser.firstName = body.firstName;
+        newUser.lastName = body.lastName;
+        newUser.age = body.age;
+        this.manager.save(newUser);
+        return;
+    }
+
+    async followToUser(body){
+        const user = await this.manager.getRepository(User).findOne(body.userId)
+        const follower = await this.manager.getRepository(User).findOne(body.followerId)
+        const followRelation = new FollowRelation();
+        followRelation.user = user;
+        followRelation.follower = follower;
+        await this.manager.save(User);
+        return {message: 'Relation was created'};
+    }
+
 }

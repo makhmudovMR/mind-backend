@@ -20,7 +20,7 @@ export class ContentController {
 
     @Get('getfollowingpost')
     async getFollowingPost(@Req() req, @Body() body) {
-        return this.contentService.getFollowingPost(req, body);
+        // return this.contentService.getFollowingPost(req, body);
     }
 
     @Post('makepost')
