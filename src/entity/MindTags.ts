@@ -1,6 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, ManyToMany, JoinTable } from "typeorm"
 import { Mind } from "./Mind";
 
+@Entity()
 export class MindTags {
 
     @PrimaryGeneratedColumn()
