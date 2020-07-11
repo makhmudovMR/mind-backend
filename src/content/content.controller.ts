@@ -14,8 +14,8 @@ export class ContentController {
     }
 
     @Get('getallpost')
-    async getAllPost(@Req() req, @Body() body) {
-        return this.contentService.getAllPost(req, body);
+    async getAllPost() {
+        return this.contentService.getAllPost();
     }
 
     @Get('getfollowingpost')
@@ -23,19 +23,22 @@ export class ContentController {
         return this.contentService.getFollowingPost(req, body);
     }
 
-    @Post('makepost')
+    @Post('postmind')
     async makePost(@Req() req, @Body() body) {
-        return this.contentService.addMind(req, body);
+        return this.contentService.postMind(req, body);
+    }
+
+    @Post('followtouser')
+    async followToUser(@Req() req, @Body() body){
+        return this.contentService.followToUser(req, body);
     }
 
     @Get('gettags')
     async getTags() {
-        // TODO
+        return this.contentService.getTags();
     }
 
-    @Post('searchpost')
-    async searchPost() {
-        // TODO
-    }
+    // @Post('searchpost')
+    // async searchPost() {}
 
 }

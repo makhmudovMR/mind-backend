@@ -36,14 +36,14 @@ export class AuthController {
         return this.auth.allTokens();
     }
 
-    @Post('adduser')
-    async addUser(@Body() body) {
-        return await this.auth.addUser(body);
-    }
+    // @Post('adduser')
+    // async addUser(@Body() body) {
+    //     return await this.auth.addUser(body);
+    // }
 
-    @Post('follow')
-    async followToUser(@Body() body){
-        console.log('test..')
-        return await this.auth.followToUser(body)
-    }
+    // @Post('follow')
+    // async followToUser(@Body() body){
+    //     console.log('test..')
+    //     return await this.auth.followToUser(body)
+    // }
 }

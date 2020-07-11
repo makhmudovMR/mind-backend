@@ -87,23 +87,23 @@ export class AuthService {
         return await this.manager.getRepository(Token).find({relations:['user']});
     }
 
-    async addUser(body){
-        const newUser = new User();
-        newUser.username = body.username;
-        newUser.password = body.password;
-        newUser.firstname = body.firstname;
-        newUser.lastname = body.lastname;
-        newUser.age = body.age;
-        await this.manager.save(newUser);
-        return {message: 'User was added'};
-    }
+    // async addUser(body){
+    //     const newUser = new User();
+    //     newUser.username = body.username;
+    //     newUser.password = body.password;
+    //     newUser.firstname = body.firstname;
+    //     newUser.lastname = body.lastname;
+    //     newUser.age = body.age;
+    //     await this.manager.save(newUser);
+    //     return {message: 'User was added'};
+    // }
 
-    async followToUser(body){
-        const followRelation = new FollowRelation();
-        followRelation.userId = body.userId;
-        followRelation.followerId = body.followerId;
-        await this.manager.save(followRelation);
-        return {message: 'Relation was created'};
-    }
+    // async followToUser(body){
+    //     const followRelation = new FollowRelation();
+    //     followRelation.userId = body.userId;
+    //     followRelation.followerId = body.followerId;
+    //     await this.manager.save(followRelation);
+    //     return {message: 'Relation was created'};
+    // }
 
 }
