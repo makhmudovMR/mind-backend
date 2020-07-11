@@ -20,12 +20,12 @@ export class ContentController {
 
     @Get('getfollowingpost')
     async getFollowingPost(@Req() req, @Body() body) {
-        // return this.contentService.getFollowingPost(req, body);
+        return this.contentService.getFollowingPost(req, body);
     }
 
     @Post('makepost')
-    async makePost() {
-        // TODO
+    async makePost(@Req() req, @Body() body) {
+        return this.contentService.addMind(req, body);
     }
 
     @Get('gettags')

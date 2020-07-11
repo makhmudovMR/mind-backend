@@ -13,10 +13,10 @@ export class User {
     password: string;
 
     @Column()
-    firstName: string;
+    firstname: string;
 
     @Column()
-    lastName: string;
+    lastname: string;
 
     @Column({default: 0})
     age: number;

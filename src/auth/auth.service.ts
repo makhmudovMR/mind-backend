@@ -7,6 +7,7 @@ import { Token } from '../entity/Token';
 import jwt = require('jsonwebtoken');
 import uuid = require('uuid/v4');
 import { FollowRelation } from '../entity/FollowRelation';
+// import { FollowRelation, Mind, MindTags, Token, User} from '../entity';
 
 @Injectable()
 export class AuthService {
@@ -61,8 +62,8 @@ export class AuthService {
         if (body.password === body.password_confirm) {
             const newUser = new User();
             newUser.username = body.username;
-            newUser.firstName = body.firstName;
-            newUser.lastName = body.lastName;
+            newUser.firstname = body.firstname;
+            newUser.lastname = body.lastname;
             newUser.password = body.password;
             this.manager.save(newUser);
             return {message: 'User is registered'};
@@ -90,20 +91,18 @@ export class AuthService {
         const newUser = new User();
         newUser.username = body.username;
         newUser.password = body.password;
-        newUser.firstName = body.firstName;
-        newUser.lastName = body.lastName;
+        newUser.firstname = body.firstname;
+        newUser.lastname = body.lastname;
         newUser.age = body.age;
-        this.manager.save(newUser);
-        return;
+        await this.manager.save(newUser);
+        return {message: 'User was added'};
     }
 
     async followToUser(body){
-        const user = await this.manager.getRepository(User).findOne(body.userId)
-        const follower = await this.manager.getRepository(User).findOne(body.followerId)
         const followRelation = new FollowRelation();
-        followRelation.user = user;
-        followRelation.follower = follower;
-        await this.manager.save(User);
+        followRelation.userId = body.userId;
+        followRelation.followerId = body.followerId;
+        await this.manager.save(followRelation);
         return {message: 'Relation was created'};
     }
 

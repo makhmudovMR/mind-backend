@@ -6,11 +6,9 @@ export class FollowRelation {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @OneToOne(type => User)
-    @JoinColumn()
-    user: User;
+    @Column()
+    userId: number;
 
-    @OneToOne(type => User)
-    @JoinColumn()
-    follower: User;
+    @Column()
+    followerId: number;
 }
