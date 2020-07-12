@@ -6,6 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
 import { LoggerMiddleware} from './middleware/auth.middleware';
 import { ContentModule } from './content/content.module';
+import { CorsMiddleware } from './middleware/cors.middleware';
 
 
 @Module({
@@ -16,6 +17,7 @@ import { ContentModule } from './content/content.module';
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer.apply(LoggerMiddleware).forRoutes('*');
+    consumer.apply(CorsMiddleware).forRoutes('*');
     // consumer.apply(LoggerMiddleware).exclude('/auth/login').forRoutes('*');
   }
 }

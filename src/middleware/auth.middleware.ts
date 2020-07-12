@@ -12,7 +12,8 @@ function getPath(originalUrl: string) {
 }
 
 export function LoggerMiddleware(req, res, next) {
-    if (getPath(req.originalUrl) !== '/auth/login' && getPath(req.originalUrl) !== '/auth/alltokens') {
+    console.log(getPath(req.originalUrl));
+    if (getPath(req.originalUrl) !== '/auth/login/' && getPath(req.originalUrl) !== '/auth/login') {
         jwt.verify(req.headers.token, 'mind', (err, decoded) => {
             if (err) {
                 return res.status(401).json({
