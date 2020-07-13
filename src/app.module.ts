@@ -17,7 +17,6 @@ import { CorsMiddleware } from './middleware/cors.middleware';
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer.apply(LoggerMiddleware).forRoutes('*');
-    consumer.apply(CorsMiddleware).forRoutes('*');
     // consumer.apply(LoggerMiddleware).exclude('/auth/login').forRoutes('*');
   }
 }
