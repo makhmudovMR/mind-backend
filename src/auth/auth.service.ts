@@ -16,7 +16,9 @@ export class AuthService {
     ) { }
 
     async login(body) {
+        console.log(body);
         const user = await this.manager.getRepository(User).findOne({ where: { username: body.username } });
+        console.log(user);
         if (user !== null) {
             if (user.password !== body.password) {
                 throw new BadRequestException('Invalid password');
