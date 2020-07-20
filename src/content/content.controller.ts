@@ -38,6 +38,12 @@ export class ContentController {
         return this.contentService.getTags();
     }
 
+
+    @Get('getauthuserinfo')
+    async getAuthUserInfo(@Req() req, @Body() body){
+        return this.contentService.getAuthUserInfo(req, body);
+    }
+    
     // @Post('searchpost')
     // async searchPost() {}
 

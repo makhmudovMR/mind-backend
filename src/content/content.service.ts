@@ -5,6 +5,7 @@ import { User } from '../entity/User';
 import { Mind, FollowRelation, MindTags } from '../entity';
 // import { Mind } from '../entity/Mind';
 
+
 @Injectable()
 export class ContentService {
     constructor(
@@ -20,7 +21,25 @@ export class ContentService {
 
     async getUserInfo(req, body) {
         const user = await this.manager.getRepository(User).findOne({ where: { id: body.userId } });
-        return { user };
+        return user;
+    }
+
+    async getAuthUserInfo(req, body){
+        const user: any = await this.manager.getRepository(User).findOne({ where: { id: req.userInfo.userId } });
+        let following = await this.manager.getRepository(FollowRelation).find({where: {followerId: user.id}})
+        let followers = await this.manager.getRepository(FollowRelation).find({where: {userId: user.id}})
+        console.log(following)
+        console.log(followers)
+        let followingIds = following.map(item => item.userId)
+        let followersIds = followers.map(item => item.followerId);
+        console.log(followersIds);
+        console.log(followingIds);
+        let followingUsers = await this.manager.createQueryBuilder(User, 'user').where('user.id IN (:...ids)', {ids: followingIds}).getMany();
+        let followerUsers = await this.manager.createQueryBuilder(User, 'user').where('user.id IN (:...ids)', {ids: followersIds}).getMany();
+        user.follower = followerUsers;
+        user.following = followingUsers;
+        console.log(user)
+        return user
     }
 
     async getUserMinds(req, body) {
@@ -46,14 +65,16 @@ export class ContentService {
     }
 
     async getFollowingPost(req, body) {
-
-        const following = await this.manager.getRepository(FollowRelation).find({ where: { followerId: req.userInfo.id } });
-        console.log(following);
+        console.log(req.userInfo)
+        const following = await this.manager.getRepository(FollowRelation).find({ where: { followerId: req.userInfo.userId } });
+        console.log('following',following);
         const followingIds = following.map(item => {
             return item.userId
         })
-        console.log(followingIds);
-        const minds = await this.manager.getRepository(Mind).find({ where: { __user: { id: followingIds } } });
+        console.log('followingIds',followingIds);
+        // const minds = await this.manager.getRepository(Mind).find({ where: { __user: { id: followingIds } } });
+        const minds = await this.manager.createQueryBuilder(Mind, 'mind').leftJoinAndSelect('mind.user', 'user').where('mind.userId IN (:...users)', {users: followingIds}).getMany();
+        console.log('minds',minds);
         return minds;
     }
 
