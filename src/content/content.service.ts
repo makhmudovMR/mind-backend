@@ -70,12 +70,15 @@ export class ContentService {
     async getFollowingPost(req, body) {
         console.log(req.userInfo)
         const following = await this.manager.getRepository(FollowRelation).find({ where: { followerId: req.userInfo.userId } });
-        console.log('following', following);
+        console.log(following);
+        console.log('---')
         const followingIds = following.map(item => {
             return item.userId
         })
         followingIds.push(req.userInfo.userId);
-        console.log('followingIds', followingIds);
+        console.log('---')
+        console.log(followingIds)
+        console.log('------')
         // const minds = await this.manager.getRepository(Mind).find({ where: { __user: { id: followingIds } } });
         const minds = await this.manager.createQueryBuilder(Mind, 'mind').leftJoinAndSelect('mind.user', 'user').where('mind.userId IN (:...users)', { users: followingIds }).orderBy('createdDate', 'DESC').getMany();
         console.log('minds', minds);
@@ -96,7 +99,7 @@ export class ContentService {
     // }
 
     async postMind(req, body) {
-        const user = await this.manager.getRepository(User).findOne(req.userInfo.id);
+        const user = await this.manager.getRepository(User).findOne(req.userInfo.userId);
         const mind = new Mind();
         mind.body = body.body;
         mind.user = user;
