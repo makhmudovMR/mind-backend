@@ -20,7 +20,7 @@ export class ContentService {
     }
 
     async getUserInfo(req, body) {
-        const user:any = await this.manager.getRepository(User).findOne({ where: { id: body.userId } });
+        const user: any = await this.manager.getRepository(User).findOne({ where: { id: body.userId } });
         let following = await this.manager.getRepository(FollowRelation).find({ where: { followerId: body.userId } })
         let followers = await this.manager.getRepository(FollowRelation).find({ where: { userId: body.userId } })
 
@@ -65,8 +65,8 @@ export class ContentService {
         return minds;
     }
 
-    async getMindsByUserId(req, body){
-        const minds = await this.manager.getRepository(Mind).find({where: {user: {id: body.userId}}, relations: ['user']})
+    async getMindsByUserId(req, body) {
+        const minds = await this.manager.getRepository(Mind).find({ where: { user: { id: body.userId } }, relations: ['user'] })
         return minds;
     }
 
@@ -125,5 +125,15 @@ export class ContentService {
         mind.createdDate = new Date();
         this.manager.save(mind);
         return { message: "mind was added" };
+    }
+
+    async getRelation(req, body) {
+        const relation = await this.manager.getRepository(FollowRelation)
+            .findOne({ where: { followerId: req.userInfo.userId, userId: body.userId } });
+        if (relation !== null && relation !== undefined) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

@@ -14,7 +14,7 @@ export class ContentController {
     }
 
     @Post('getuserinfo')
-    async getUserInfo(@Req() req, @Body() body){
+    async getUserInfo(@Req() req, @Body() body) {
         return this.contentService.getUserInfo(req, body);
     }
 
@@ -34,7 +34,7 @@ export class ContentController {
     }
 
     @Post('followtouser')
-    async followToUser(@Req() req, @Body() body){
+    async followToUser(@Req() req, @Body() body) {
         return this.contentService.followToUser(req, body);
     }
 
@@ -45,15 +45,19 @@ export class ContentController {
 
 
     @Get('getauthuserinfo')
-    async getAuthUserInfo(@Req() req, @Body() body){
+    async getAuthUserInfo(@Req() req, @Body() body) {
         return this.contentService.getAuthUserInfo(req, body);
     }
 
     @Post('getmindsbyuserid')
-    async getMindsByUserId(@Req() req, @Body() body){
+    async getMindsByUserId(@Req() req, @Body() body) {
         return this.contentService.getMindsByUserId(req, body);
     }
-    
+
+    @Post('getrelation')
+    async getRelation(@Req() req, @Body() body) {
+        return this.contentService.getRelation(req, body);
+    }
     // @Post('searchpost')
     // async searchPost() {}
 
