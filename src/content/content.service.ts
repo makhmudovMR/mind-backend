@@ -20,7 +20,21 @@ export class ContentService {
     }
 
     async getUserInfo(req, body) {
-        const user = await this.manager.getRepository(User).findOne({ where: { id: body.userId } });
+        const user:any = await this.manager.getRepository(User).findOne({ where: { id: body.userId } });
+        let following = await this.manager.getRepository(FollowRelation).find({ where: { followerId: body.userId } })
+        let followers = await this.manager.getRepository(FollowRelation).find({ where: { userId: body.userId } })
+
+        let followingIds = following.map(item => item.userId)
+        let followersIds = followers.map(item => item.followerId);
+
+        let followingUsers = await this.manager.createQueryBuilder(User, 'user').where('user.id IN (:...ids)', { ids: followingIds }).getMany();
+        let followerUsers = await this.manager.createQueryBuilder(User, 'user').where('user.id IN (:...ids)', { ids: followersIds }).getMany();
+
+        user.follower = followerUsers;
+        user.following = followingUsers;
+        user.followerLength = followerUsers.length;
+        user.followingLength = followingUsers.length;
+
         return user;
     }
 
@@ -48,6 +62,11 @@ export class ContentService {
     async getUserMinds(req, body) {
         const user = await this.manager.getRepository(User).findOne(body.userId);
         const minds = await this.manager.getRepository(Mind).find({ where: { user: user } })
+        return minds;
+    }
+
+    async getMindsByUserId(req, body){
+        const minds = await this.manager.getRepository(Mind).find({where: {user: {id: body.userId}}, relations: ['user']})
         return minds;
     }
 

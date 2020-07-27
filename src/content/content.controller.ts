@@ -13,6 +13,11 @@ export class ContentController {
         return this.contentService.getUser(req, body);
     }
 
+    @Post('getuserinfo')
+    async getUserInfo(@Req() req, @Body() body){
+        return this.contentService.getUserInfo(req, body);
+    }
+
     @Get('getallpost')
     async getAllPost() {
         return this.contentService.getAllPost();
@@ -42,6 +47,11 @@ export class ContentController {
     @Get('getauthuserinfo')
     async getAuthUserInfo(@Req() req, @Body() body){
         return this.contentService.getAuthUserInfo(req, body);
+    }
+
+    @Post('getmindsbyuserid')
+    async getMindsByUserId(@Req() req, @Body() body){
+        return this.contentService.getMindsByUserId(req, body);
     }
     
     // @Post('searchpost')
