@@ -59,6 +59,11 @@ export class ContentController {
         return this.contentService.getRelation(req, body);
     }
 
+    @Post('getfollowers')
+    async getFollowers(@Req() req, @Body() body){
+        return this.contentService.getFollowers(req, body);
+    }
+
     // @Post('searchpost')
     // async searchPost() {}
 

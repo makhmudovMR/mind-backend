@@ -143,4 +143,13 @@ export class ContentService {
             return false;
         }
     }
+
+    async getFollowers(req, body){
+        console.log(body);
+        let followersRelations = await this.manager.getRepository(FollowRelation).find({where: {userId: body.userId}})
+        const followersIds = followersRelations.map(item => item.followerId);
+        console.log(followersIds);
+        const followers = await this.manager.createQueryBuilder(User, 'user').where('user.id IN (:...users)', {users: followersIds}).getMany();
+        return followers;
+    }
 }
