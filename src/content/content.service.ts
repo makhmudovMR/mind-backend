@@ -79,11 +79,18 @@ export class ContentService {
     }
 
     async followToUser(req, body) {
-        const followRelation = new FollowRelation();
-        followRelation.userId = body.followingId;
-        followRelation.followerId = req.userInfo.id;
-        await this.manager.save(followRelation);
-        return { message: 'user is followed' };
+        const followingRelation = await this.manager.getRepository(FollowRelation)
+            .findOne({ where: { followerId: req.userInfo.userId, userId: body.userId } });
+        if (followingRelation) {
+            this.manager.remove(followingRelation);
+            return { message: 'follow relation is removed' };
+        } else {
+            const followRelation = new FollowRelation();
+            followRelation.userId = body.userId;
+            followRelation.followerId = req.userInfo.userId;
+            await this.manager.save(followRelation);
+            return { message: 'user is followed' };
+        }
     }
 
     async getFollowingPost(req, body) {
