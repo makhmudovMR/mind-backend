@@ -43,7 +43,6 @@ export class ContentController {
         return this.contentService.getTags();
     }
 
-
     @Get('getauthuserinfo')
     async getAuthUserInfo(@Req() req, @Body() body) {
         return this.contentService.getAuthUserInfo(req, body);
@@ -62,6 +61,11 @@ export class ContentController {
     @Post('getfollowers')
     async getFollowers(@Req() req, @Body() body){
         return this.contentService.getFollowers(req, body);
+    }
+
+    @Post('getfollowing')
+    async getFollowing(@Req() req, @Body() body){
+        return this.contentService.getFollowing(req, body);
     }
 
     // @Post('searchpost')

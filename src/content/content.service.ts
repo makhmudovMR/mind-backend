@@ -152,4 +152,12 @@ export class ContentService {
         const followers = await this.manager.createQueryBuilder(User, 'user').where('user.id IN (:...users)', {users: followersIds}).getMany();
         return followers;
     }
+
+    async getFollowing(req, body){
+        console.log(body);
+        const followingRelations = await this.manager.getRepository(FollowRelation).find({where: {followerId: body.userId}})
+        const followingIds = followingRelations.map(item => item.userId);
+        const following = await this.manager.createQueryBuilder(User, 'user').where('user.id IN (:...users)', {users: followingIds}).getMany();
+        return following;
+    }
 }
