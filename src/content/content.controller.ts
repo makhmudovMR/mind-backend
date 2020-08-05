@@ -68,6 +68,11 @@ export class ContentController {
         return this.contentService.getFollowing(req, body);
     }
 
+    @Post('createchat')
+    async createChat(@Req() req, @Body() body){
+        return this.contentService.createChat(req, body);
+    }
+
     // @Post('searchpost')
     // async searchPost() {}
 

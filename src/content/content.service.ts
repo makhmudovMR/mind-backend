@@ -3,6 +3,7 @@ import { InjectEntityManager } from '@nestjs/typeorm';
 import { EntityManager } from 'typeorm';
 import { User } from '../entity/User';
 import { Mind, FollowRelation, MindTags } from '../entity';
+import { Chat } from '../entity/Chat';
 // import { Mind } from '../entity/Mind';
 
 
@@ -144,20 +145,54 @@ export class ContentService {
         }
     }
 
-    async getFollowers(req, body){
+    async getFollowers(req, body) {
         console.log(body);
-        let followersRelations = await this.manager.getRepository(FollowRelation).find({where: {userId: body.userId}})
+        let followersRelations = await this.manager.getRepository(FollowRelation).find({ where: { userId: body.userId } })
         const followersIds = followersRelations.map(item => item.followerId);
         console.log(followersIds);
-        const followers = await this.manager.createQueryBuilder(User, 'user').where('user.id IN (:...users)', {users: followersIds}).getMany();
+        const followers = await this.manager.createQueryBuilder(User, 'user').where('user.id IN (:...users)', { users: followersIds }).getMany();
         return followers;
     }
 
-    async getFollowing(req, body){
+    async getFollowing(req, body) {
         console.log(body);
-        const followingRelations = await this.manager.getRepository(FollowRelation).find({where: {followerId: body.userId}})
+        const followingRelations = await this.manager.getRepository(FollowRelation).find({ where: { followerId: body.userId } })
         const followingIds = followingRelations.map(item => item.userId);
-        const following = await this.manager.createQueryBuilder(User, 'user').where('user.id IN (:...users)', {users: followingIds}).getMany();
+        const following = await this.manager.createQueryBuilder(User, 'user').where('user.id IN (:...users)', { users: followingIds }).getMany();
         return following;
+    }
+
+    async createChat(req, body) {
+
+        // const chat = await this.manager.createQueryBuilder(Chat, 'chat')
+        //     .where('chat.user1id = :user1 AND chat.user2id = :user2', { user1: 1, user2: 2 })
+        //     .orWhere('chat.user1id = :user1 AND chat.user2id = :user2', { user1: 2, user2: 1 })
+        //     .getOne();
+
+        let chat = await this.manager.createQueryBuilder(Chat, 'chat')
+            .where('chat.user1id = :user1 AND chat.user2id = :user2', { user1: req.userInfo.userId, user2: body.userId }).getOne()
+        
+        console.log('this is chat-> ',chat)
+
+        if(!chat){
+            console.log('we are here')
+            chat = await this.manager.createQueryBuilder(Chat, 'chat')
+            .where('chat.user1id = :user1 AND chat.user2id = :user2', { user1: body.userId, user2: req.userInfo.userId }).getOne()
+        }
+
+        console.log('this is chat 2 -> ', chat);
+        
+        if(!chat){
+            console.log('create chat')
+            const user1 = await this.manager.getRepository(User).findOne(req.userInfo.userId);
+            const user2 = await this.manager.getRepository(User).findOne(body.userId);
+            const newChat = new Chat()
+            newChat.user1 = user1;
+            newChat.user2 = user2;
+            await this.manager.save(newChat);
+            return newChat;
+        }
+        console.log(chat)
+        return chat
     }
 }
