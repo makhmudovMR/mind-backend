@@ -4,6 +4,7 @@ import { EntityManager } from 'typeorm';
 import { User } from '../entity/User';
 import { Mind, FollowRelation, MindTags } from '../entity';
 import { Chat } from '../entity/Chat';
+import { Message } from '../entity/Message';
 // import { Mind } from '../entity/Mind';
 
 
@@ -186,6 +187,8 @@ export class ContentService {
             console.log('create chat')
             const user1 = await this.manager.getRepository(User).findOne(req.userInfo.userId);
             const user2 = await this.manager.getRepository(User).findOne(body.userId);
+            console.log(user1)
+            console.log(user2)
             const newChat = new Chat()
             newChat.user1 = user1;
             newChat.user2 = user2;
@@ -193,6 +196,48 @@ export class ContentService {
             return newChat;
         }
         console.log(chat)
-        return chat
+        return chat;
+    }
+
+    async loadMessages(body){
+        const messages = await this.manager.getRepository(Message).find({where: {chat:{id:body.chatId}}, relations: ['user']});
+        console.log(messages);
+        return messages;
+    }
+
+    async writeMessage(req, body){
+        const user = await this.manager.getRepository(User).findOne(req.userInfo.userId);
+        const chat = await this.manager.getRepository(Chat).findOne(body.chatId);
+        const message = new Message();
+        message.text = body.text;
+        message.user = user;
+        message.chat = chat;
+        message.date = new Date();
+        await this.manager.save(message);
+    }
+
+    async loadChats(req, body){
+        const user = await this.manager.getRepository(User).findOne(req.userInfo.userId);
+        let chats = await this.manager.createQueryBuilder(Chat, 'chat')
+        .leftJoinAndSelect(User,  'user1', 'user1.id=chat.user1')
+        .leftJoinAndSelect(User,  'user2', 'user2.id=chat.user2')
+        
+        .where('user1.id = :user1id', {user1id: user.id})
+        .orWhere('user2.id = :user2id', {user2id: user.id})
+        .getRawMany()
+        // let chats1 = await this.manager.getRepository(Chat).find({where: {user1:user}, relations: ['user1', 'user2']});
+        // console.log(chats1)
+        // let chats2 = []
+        // console.log('chats ->',chats1)
+        // // if (chats1 == [] || chats1.length == 0){
+        // console.log('wer are herererere')
+        // chats2 = await this.manager.getRepository(Chat).find({where: {user2: user}, relations: ['user1', 'user2']});
+        // console.log(chats2)
+        // // }
+        // chats1.concat(chats2)
+        // console.log('-----')
+        // console.log(chats1);
+        console.log(chats)
+        return {chats, myUser: user};
     }
 }

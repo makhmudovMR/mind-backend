@@ -10,7 +10,7 @@ import { CorsMiddleware } from './middleware/cors.middleware';
 
 
 @Module({
-  imports: [TypeOrmModule.forRoot(), AuthModule, ContentModule],
+  imports: [TypeOrmModule.forRoot({loggerLevel: "info"}), AuthModule, ContentModule],
   controllers: [AppController],
   providers: [AppService],
 })

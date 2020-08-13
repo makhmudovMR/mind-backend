@@ -73,7 +73,19 @@ export class ContentController {
         return this.contentService.createChat(req, body);
     }
 
-    // @Post('searchpost')
-    // async searchPost() {}
+    @Post('loadmessages')
+    async loadMessages(@Body() body){
+        return this.contentService.loadMessages(body);
+    }
+
+    @Post('writemessage')
+    async writeMessage(@Req() req, @Body() body){
+        return this.contentService.writeMessage(req, body)
+    }
+
+    @Post('loadchats')
+    async loadChats(@Req() req, @Body() body){
+        return this.contentService.loadChats(req, body)
+    }
 
 }

@@ -14,8 +14,10 @@ export class Message {
     @JoinColumn()
     user: User;
 
-    @Column()
-    message: string;
+    @Column('nvarchar',{
+        nullable: true,
+    })
+    text: string;
 
     @Column()
     date: Date;
